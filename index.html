@@ -10,13 +10,103 @@
         <header id="banner" class="body">
                 <h1><a href="/">CMD ITB LAB </a></h1>
                 <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/contact.html">Contact</a></li>
+                    <li><a href="/pages/staffs.html">Staffs</a></li>
+                    <li><a href="/pages/members.html">Members</a></li>
+                    <li><a href="/pages/research-topics.html">Research topics</a></li>
                     <li><a href="/category/post.html">Post</a></li>
+                    <li><a href="/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/second-post.html">Second Post</a></h1>
+                    <h1 class="entry-title"><a href="/fortran-tutorial-1.html">Fortran Tutorial 1</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2019-08-20T14:30:00+07:00">
+                Published: Tue 20 August 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/cmd-itb-lab.html">cmd-itb-lab</a>
+        </address>
+<p>In <a href="/category/post.html">Post</a>.</p>
+
+</footer><!-- /.post-info --><p>This is a Fortran tutorial.</p>
+<p>Fortran example:</p>
+<div class="highlight"><pre><span></span><span class="k">PROGRAM </span><span class="n">myprog</span>
+  <span class="k">IMPLICIT NONE</span>
+<span class="k">  CALL </span><span class="n">mysub</span><span class="p">(</span><span class="mf">5.d0</span><span class="p">,</span> <span class="mf">4.1d0</span><span class="p">)</span>
+<span class="k">END PROGRAM</span>
+
+<span class="k">SUBROUTINE </span><span class="n">mysub</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+  <span class="k">IMPLICIT NONE</span>
+<span class="k">  </span><span class="kt">REAL</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+  <span class="k">WRITE</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s1">&#39;x + y = &#39;</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="k">END SUBROUTINE</span>
+</pre></div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/this-is-the-third-post.html" rel="bookmark"
+                           title="Permalink to This is the third post">This is the third post</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2019-08-20T14:00:00+07:00">
+                Published: Tue 20 August 2019
+        </abbr>
+		<br />
+        <abbr class="modified" title="2019-08-20T14:24:00+07:00">
+                Updated: Tue 20 August 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/fadjar-fathurrahman.html">Fadjar Fathurrahman</a>
+        </address>
+<p>In <a href="/category/python.html">Python</a>.</p>
+<p>tags: <a href="/tag/pelican.html">pelican</a> <a href="/tag/publishing.html">publishing</a> </p>
+</footer><!-- /.post-info -->                <p>This is just a summary</p>
+                <a class="readmore" href="/this-is-the-third-post.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/finite-difference-in-1d.html" rel="bookmark"
+                           title="Permalink to Finite Difference in 1D">Finite Difference in 1D</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2019-08-08T22:26:00+07:00">
+                Published: Thu 08 August 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/cmd-itb-lab.html">cmd-itb-lab</a>
+        </address>
+<p>In <a href="/category/post.html">Post</a>.</p>
+
+</footer><!-- /.post-info -->                <p>A tutorial about finite difference solution to TISE</p>
+                <a class="readmore" href="/finite-difference-in-1d.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/second-post.html" rel="bookmark"
+                           title="Permalink to Second Post">Second Post</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2019-08-08T21:50:00+07:00">
                 Published: Thu 08 August 2019
@@ -27,12 +117,10 @@
         </address>
 <p>In <a href="/category/post.html">Post</a>.</p>
 
-</footer><!-- /.post-info --><p>Hello, this is my <strong>second</strong> post.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <p>Hello, this is my <strong>second</strong> post.</p>
+                <a class="readmore" href="/second-post.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -61,10 +149,8 @@
                 <div class="blogroll">
                         <h2>links</h2>
                         <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
+                            <li><a href="https://itb.ac.id/">ITB</a></li>
+                            <li><a href="http://python.org/">Teknik Fisika ITB</a></li>
                         </ul>
                 </div><!-- /.blogroll -->
                 <div class="social">
