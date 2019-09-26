@@ -10,13 +10,12 @@
         <header id="banner" class="body">
                 <h1><a href="/">CMD ITB LAB </a></h1>
                 <nav><ul>
-                    <li><a href="/pages/about.html">About</a></li>
-                    <li><a href="/pages/contact.html">Contact</a></li>
-                    <li><a href="/pages/members.html">Members</a></li>
-                    <li><a href="/pages/publications.html">Publications</a></li>
-                    <li><a href="/pages/research-topics.html">Research topics</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                    <li><a href="/members.html">Members</a></li>
+                    <li><a href="/research-topics.html">Research</a></li>
+                    <li><a href="/publications.html">Publications</a></li>
                     <li class="active"><a href="/category/post.html">Post</a></li>
-                    <li><a href="/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
@@ -34,31 +33,78 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/cmd-itb-lab.html">cmd-itb-lab</a>
+                By                         <a class="url fn" href="/author/fadjar-fathurrahman.html">Fadjar Fathurrahman</a>
         </address>
 <p>In <a href="/category/post.html">Post</a>.</p>
 
-</footer><!-- /.post-info -->      <p>Activate Anaconda environment first.</p>
-<p>Installing ASE</p>
-<p>Libxc-4.3.4</p>
-<p>Configuring LibXC:</p>
-<div class="highlight"><pre><span></span><span class="n">cmake</span> <span class="o">-</span><span class="n">D</span> <span class="n">CMAKE_INSTALL_PREFIX</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">efefer</span><span class="o">/</span><span class="n">miniconda3</span><span class="o">/</span> <span class="p">..</span><span class="o">/</span>
-<span class="n">make</span> <span class="o">-</span><span class="n">j</span> <span class="mi">4</span>
+</footer><!-- /.post-info -->      <p>In this post, I will describe how to install <a href="https://wiki.fysik.dtu.dk/ase/">ASE</a> and
+<a href="https://wiki.fysik.dtu.dk/gpaw/">GPAW</a> in an Anaconda 3 Linux distribution.</p>
+<p>Remember to active the Anaconda 3 environment first.</p>
+<div class="highlight"><pre><span></span><span class="k">source</span> <span class="n">activate</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">anaconda3</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">activate</span>
 </pre></div>
 
 
-<p>GPAW</p>
+<p>(assuming that your Anaconda 3 distribution is installed at <code>/opt/anaconda3</code>)</p>
+<h1>Installing ASE</h1>
+<h2>Install the requirements:</h2>
+<p>According to <a href="https://wiki.fysik.dtu.dk/ase/install.html">the manual</a> the requirements are:</p>
+<p>Mandotory:
+- Python 3.5 or newer
+- NumPy 1.10 or newer (base N-dimensional array package)
+- SciPy 0.16 or newer (library for scientific computing)</p>
+<p>Optional:
+- Matplotlib 2.0.0 or newer (plotting)
+- tkinter (for ase.gui)
+- Flask (for ase.db web-interface)</p>
+<p>Standard Anaconda 3 (not Miniconda) distribution should already have these requirements.</p>
+<h2>Download and unpack the distribution tarball.</h2>
+<div class="highlight"><pre><span></span><span class="n">tar</span> <span class="n">xvf</span> <span class="n">ase</span><span class="o">-</span><span class="mi">3</span><span class="p">.</span><span class="mi">18</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span>
+<span class="n">cd</span> <span class="n">ase</span><span class="o">-</span><span class="mi">3</span><span class="p">.</span><span class="mi">18</span><span class="p">.</span><span class="mi">1</span>
+<span class="n">python</span> <span class="n">setup</span><span class="p">.</span><span class="n">py</span> <span class="n">build</span>
+<span class="n">python</span> <span class="n">setup</span><span class="p">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+
+
+<p>Please change the version number accordingly.</p>
+<p>For the last step (<code>python setup.py install</code>), you might need administrator access.</p>
+<h1>Installing GNU compilers and build tools for Anaconda 3</h1>
+<div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">gcc_linux64</span> <span class="n">gfortran_linux64</span> <span class="n">autotools</span>
+</pre></div>
+
+
+<p>Install MPI:</p>
+<div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="k">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">openmpi</span>
+</pre></div>
+
+
+<p>This is required to build Libxc and binary dependecies of GPAW.</p>
+<h1>Installing Libxc</h1>
+<p>Download and unpack the tarball.</p>
+<p>Configuring LibXC (after change directory to topdir of Libxc)</p>
+<div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span>
+<span class="n">cmake</span> <span class="o">-</span><span class="n">D</span> <span class="n">CMAKE_INSTALL_PREFIX</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">anaconda3</span><span class="o">/</span> <span class="p">..</span><span class="o">/</span>
+<span class="n">make</span> <span class="o">-</span><span class="n">j</span> <span class="mi">4</span> <span class="o">#</span> <span class="n">use</span> <span class="mi">4</span> <span class="n">cores</span>
+</pre></div>
+
+
+<h1>Installing GPAW</h1>
 <div class="highlight"><pre><span></span># <span class="nv">LibXC</span>:
 # <span class="nv">In</span> <span class="nv">order</span> <span class="nv">to</span> <span class="nv">link</span> <span class="nv">libxc</span> <span class="nv">installed</span> <span class="nv">in</span> <span class="nv">a</span> <span class="nv">non</span><span class="o">-</span><span class="nv">standard</span> <span class="nv">location</span>
 # <span class="ss">(</span><span class="nv">e</span>.<span class="nv">g</span>.: <span class="nv">configure</span> <span class="o">--</span><span class="nv">prefix</span><span class="o">=/</span><span class="nv">home</span><span class="o">/</span><span class="nv">user</span><span class="o">/</span><span class="nv">libxc</span><span class="o">-</span><span class="mi">2</span>.<span class="mi">0</span>.<span class="mi">1</span><span class="o">-</span><span class="mi">1</span><span class="ss">)</span>, <span class="nv">use</span>:
 
 # <span class="o">-</span> <span class="nv">static</span> <span class="nv">linking</span>:
 <span class="k">if</span> <span class="mi">1</span>:
-    <span class="nv">xc</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">/home/efefer/miniconda3/</span><span class="s1">&#39;</span>
+    <span class="nv">xc</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">/opt/anaconda3/</span><span class="s1">&#39;</span>
     <span class="nv">include_dirs</span> <span class="o">+=</span> [<span class="nv">xc</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="s">include</span><span class="s1">&#39;</span>]
     <span class="nv">extra_link_args</span> <span class="o">+=</span> [<span class="nv">xc</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="s">lib64/libxc.a</span><span class="s1">&#39;</span>]
     <span class="k">if</span> <span class="s1">&#39;</span><span class="s">xc</span><span class="s1">&#39;</span> <span class="nv">in</span> <span class="nv">libraries</span>:
         <span class="nv">libraries</span>.<span class="nv">remove</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">xc</span><span class="s1">&#39;</span><span class="ss">)</span>
+</pre></div>
+
+
+<p>Build</p>
+<div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="p">.</span><span class="n">py</span> <span class="n">build</span>
+<span class="n">python</span> <span class="n">setup</span><span class="p">.</span><span class="n">py</span> <span class="n">install</span>
 </pre></div>
     </div><!-- /.entry-content -->
 

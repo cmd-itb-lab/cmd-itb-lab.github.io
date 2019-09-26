@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Testing new diagonalization method in PWSCF</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">CMD ITB LAB </a></h1>
+                <nav><ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                    <li><a href="/members.html">Members</a></li>
+                    <li><a href="/research-topics.html">Research</a></li>
+                    <li><a href="/publications.html">Publications</a></li>
+                    <li class="active"><a href="/category/post.html">Post</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/testing-new-diagonalization-method-in-pwscf.html" rel="bookmark"
+           title="Permalink to Testing new diagonalization method in PWSCF">Testing new diagonalization method in PWSCF</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2019-07-27T13:30:00+07:00">
+                Published: Sat 27 July 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/fadjar-fathurrahman.html">Fadjar Fathurrahman</a>
+        </address>
+<p>In <a href="/category/post.html">Post</a>.</p>
+
+</footer><!-- /.post-info -->      <p>I just noticed that PWSCF (as distributed in Quantum Espresson version 6.4)
+has a new diagonalization method: PPCG (projected
+preconditioned conjugate gradient). However, it not documented yet
+in the HTML input documentation.</p>
+<p>Now, PWSCF have three methods for iterative diagonalization of Hamiltonian:</p>
+<ul>
+<li>Davidson method (default)</li>
+<li>Sequential CG</li>
+<li>PPCG</li>
+</ul>
+<p>In this post, I want make a comparison between these methods (especially
+between Davidson and PPCG).</p>
+<p>I consider two solid-state systems for this: silicon fcc and
+LiNiO<sub>2</sub>.</p>
+<p><strong>Si fcc</strong></p>
+<p>First, let's consider silicon fcc. Here is the input file:</p>
+<div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">CONTROL</span>
+  <span class="n">calculation</span> <span class="o">=</span> <span class="s1">&#39;scf&#39;</span>
+  <span class="n">pseudo_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/efefer/pseudo&#39;</span>
+  <span class="n">outdir</span> <span class="o">=</span> <span class="s1">&#39;./tmp&#39;</span>
+<span class="o">/</span>
+
+<span class="o">&amp;</span><span class="k">SYSTEM</span>
+  <span class="n">ibrav</span> <span class="o">=</span> <span class="mi">2</span>
+  <span class="n">celldm</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="mi">10</span><span class="p">.</span><span class="mi">20</span>
+  <span class="n">nat</span> <span class="o">=</span> <span class="mi">2</span>
+  <span class="n">ntyp</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="n">ecutwfc</span> <span class="o">=</span> <span class="mi">18</span><span class="p">.</span><span class="mi">0</span>
+<span class="o">/</span>
+
+<span class="o">&amp;</span><span class="n">ELECTRONS</span>
+  <span class="n">diagonalization</span> <span class="o">=</span> <span class="s1">&#39;david&#39;</span>
+  <span class="n">mixing_beta</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">7</span>
+  <span class="n">conv_thr</span> <span class="o">=</span>  <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="n">d</span><span class="o">-</span><span class="mi">8</span>
+<span class="o">/</span>
+
+<span class="n">ATOMIC_SPECIES</span>
+<span class="n">Si</span>  <span class="mi">28</span><span class="p">.</span><span class="mi">086</span>  <span class="n">Si</span><span class="p">.</span><span class="n">pz</span><span class="o">-</span><span class="n">vbc</span><span class="p">.</span><span class="n">UPF</span>
+
+<span class="n">ATOMIC_POSITIONS</span> <span class="n">crystal</span>
+<span class="n">Si</span> <span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="mi">0</span><span class="p">.</span><span class="mi">00</span>
+<span class="n">Si</span> <span class="mi">0</span><span class="p">.</span><span class="mi">25</span> <span class="mi">0</span><span class="p">.</span><span class="mi">25</span> <span class="mi">0</span><span class="p">.</span><span class="mi">25</span>
+
+<span class="n">K_POINTS</span> <span class="n">automatic</span>
+  <span class="mi">8</span> <span class="mi">8</span> <span class="mi">8</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span>
+</pre></div>
+
+
+<p>To set the diagonalization to Davidson method, we use the line:</p>
+<div class="highlight"><pre><span></span>  <span class="n">diagonalization</span> <span class="o">=</span> <span class="s1">&#39;david&#39;</span>
+</pre></div>
+
+
+<p>For CG method:</p>
+<div class="highlight"><pre><span></span>  <span class="n">diagonalization</span> <span class="o">=</span> <span class="s1">&#39;cg&#39;</span>
+</pre></div>
+
+
+<p>And for PPCG method:</p>
+<div class="highlight"><pre><span></span>  <span class="n">diagonalization</span> <span class="o">=</span> <span class="s1">&#39;ppcg&#39;</span>
+</pre></div>
+
+
+<p>Note that I have used tighter convergence criteria <code>ethr</code> than the default value.
+Because this system is very small, I will only use 1 processor for the test.</p>
+<p>The first thing that I want to compare is the memory requirement:</p>
+<div class="highlight"><pre><span></span><span class="n">LOG_cg</span>   <span class="o">:</span>     <span class="n">Estimated</span> <span class="n">max</span> <span class="n">dynamical</span> <span class="n">RAM</span> <span class="n">per</span> <span class="n">process</span> <span class="o">&gt;</span>       <span class="mf">2.53</span> <span class="n">MB</span>
+<span class="n">LOG_david</span><span class="o">:</span>     <span class="n">Estimated</span> <span class="n">max</span> <span class="n">dynamical</span> <span class="n">RAM</span> <span class="n">per</span> <span class="n">process</span> <span class="o">&gt;</span>       <span class="mf">2.63</span> <span class="n">MB</span>
+<span class="n">LOG_ppcg</span> <span class="o">:</span>     <span class="n">Estimated</span> <span class="n">max</span> <span class="n">dynamical</span> <span class="n">RAM</span> <span class="n">per</span> <span class="n">process</span> <span class="o">&gt;</span>       <span class="mf">2.53</span> <span class="n">MB</span>
+</pre></div>
+
+
+<p>We can see that PPCG method requires less memory than Davidson method. Its memory requirement
+is about the same as CG method. This is an advantage of CG and PPCG as compared to
+Davidson method.</p>
+<p>Now let's see the time required to finish the calculation:</p>
+<div class="highlight"><pre><span></span><span class="n">LOG_cg</span>   <span class="o">:</span>     <span class="n">PWSCF</span>        <span class="o">:</span>      <span class="mf">0.27</span><span class="n">s</span> <span class="n">CPU</span>      <span class="mf">0.32</span><span class="n">s</span> <span class="n">WALL</span>
+<span class="n">LOG_david</span><span class="o">:</span>     <span class="n">PWSCF</span>        <span class="o">:</span>      <span class="mf">0.27</span><span class="n">s</span> <span class="n">CPU</span>      <span class="mf">0.28</span><span class="n">s</span> <span class="n">WALL</span>
+<span class="n">LOG_ppcg</span> <span class="o">:</span>     <span class="n">PWSCF</span>        <span class="o">:</span>      <span class="mf">0.33</span><span class="n">s</span> <span class="n">CPU</span>      <span class="mf">0.37</span><span class="n">s</span> <span class="n">WALL</span>
+</pre></div>
+
+
+<p>Here we see that the job PPCG requires the longest time to finish
+as compare to the job that used CG or Davidson method.</p>
+<p>Here we see that the job took less than 1 second to finish for the
+three methods that we considered here.
+This is not surprising since the system that we test, the silicon fcc, is
+very small. This means that the timing should not be taken seriously and
+the timing result might vary slightly between experiments (measurement).
+Also, we also should take note that the overall time to finish the calculation
+also depend on the other aspects of SCF algorithm such as density mixing and
+not from the effect of diagonalization method only.
+However, in the comparison test that I made, I only varied the
+the value of <code>diagonalization</code> in the input file, so we may assume that
+the difference comes from the diagonalization method.</p>
+<p>Let's check how many SCF iterations it took to reach convergence:</p>
+<div class="highlight"><pre><span></span><span class="n">LOG_cg</span>   <span class="o">:</span>     <span class="n">convergence</span> <span class="n">has</span> <span class="n">been</span> <span class="n">achieved</span> <span class="k">in</span>   <span class="mi">6</span> <span class="n">iterations</span>
+<span class="n">LOG_david</span><span class="o">:</span>     <span class="n">convergence</span> <span class="n">has</span> <span class="n">been</span> <span class="n">achieved</span> <span class="k">in</span>   <span class="mi">6</span> <span class="n">iterations</span>
+<span class="n">LOG_ppcg</span> <span class="o">:</span>     <span class="n">convergence</span> <span class="n">has</span> <span class="n">been</span> <span class="n">achieved</span> <span class="k">in</span>   <span class="mi">5</span> <span class="n">iterations</span>
+</pre></div>
+
+
+<p>We see that SCF+PPCG only requires 5 iterations to complete as opposed
+to SCF+CG and SCF+Davidson which require 6 iterations. Even though so,
+PPCG requires more time to finish the job (for this case).
+From this result, I guess that the overhead time (such as initialization, etc)
+for PPCG is larger as compared to CG and Davidson. This is understandable
+since it is only recently developed.</p>
+<p>Let's not forget to check the final total energy result:</p>
+<div class="highlight"><pre><span></span><span class="n">LOG_cg</span>   <span class="p">:</span><span class="o">!</span>    <span class="n">total</span> <span class="n">energy</span>              <span class="o">=</span>     <span class="o">-</span><span class="mi">15</span><span class="p">.</span><span class="mi">84445125</span> <span class="n">Ry</span>
+<span class="n">LOG_david</span><span class="p">:</span><span class="o">!</span>    <span class="n">total</span> <span class="n">energy</span>              <span class="o">=</span>     <span class="o">-</span><span class="mi">15</span><span class="p">.</span><span class="mi">84445125</span> <span class="n">Ry</span>
+<span class="n">LOG_ppcg</span> <span class="p">:</span><span class="o">!</span>    <span class="n">total</span> <span class="n">energy</span>              <span class="o">=</span>     <span class="o">-</span><span class="mi">15</span><span class="p">.</span><span class="mi">84445125</span> <span class="n">Ry</span>
+</pre></div>
+
+
+<p>The diagonalization method should not affect the converged total energy
+result.</p>
+<p><strong>LiNiO<sub>2</sub> using PAW dataset</strong></p>
+<p>Now let's consider a larger method (but still manageable on a laptop).
+Here an example input file:</p>
+<div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">CONTROL</span>
+  <span class="n">calculation</span> <span class="o">=</span> <span class="s1">&#39;scf&#39;</span>
+  <span class="n">pseudo_dir</span> <span class="o">=</span> <span class="s1">&#39;/home/efefer/pseudo&#39;</span>
+  <span class="n">outdir</span> <span class="o">=</span> <span class="s1">&#39;./tmp&#39;</span>
+<span class="o">/</span>
+
+<span class="o">&amp;</span><span class="k">SYSTEM</span>
+  <span class="n">ibrav</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">A</span> <span class="o">=</span> <span class="mi">5</span><span class="p">.</span><span class="mi">07202</span>
+  <span class="n">nat</span> <span class="o">=</span> <span class="mi">4</span>
+  <span class="n">ntyp</span> <span class="o">=</span> <span class="mi">3</span>
+  <span class="n">ecutwfc</span> <span class="o">=</span> <span class="mi">40</span><span class="p">.</span><span class="mi">0</span>
+  <span class="n">ecutrho</span> <span class="o">=</span> <span class="mi">180</span><span class="p">.</span><span class="mi">0</span>
+  <span class="n">occupations</span> <span class="o">=</span> <span class="s1">&#39;smearing&#39;</span>
+  <span class="n">smearing</span> <span class="o">=</span> <span class="s1">&#39;mv&#39;</span>
+  <span class="n">degauss</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">002</span>
+<span class="o">/</span>
+
+<span class="o">&amp;</span><span class="n">ELECTRONS</span>
+  <span class="n">diagonalization</span> <span class="o">=</span> <span class="s1">&#39;david&#39;</span>
+  <span class="n">electron_maxstep</span> <span class="o">=</span> <span class="mi">150</span>
+  <span class="n">mixing_beta</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">1</span>
+<span class="o">/</span>
+
+<span class="n">ATOMIC_SPECIES</span>
+  <span class="n">Ni</span>   <span class="mi">58</span><span class="p">.</span><span class="mi">69340</span>  <span class="n">Ni</span><span class="p">.</span><span class="n">pbe</span><span class="o">-</span><span class="n">n</span><span class="o">-</span><span class="n">kjpaw_psl</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="n">UPF</span>
+   <span class="n">O</span>   <span class="mi">15</span><span class="p">.</span><span class="mi">99900</span>  <span class="n">O</span><span class="p">.</span><span class="n">pbe</span><span class="o">-</span><span class="n">n</span><span class="o">-</span><span class="n">kjpaw_psl</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="n">UPF</span>
+  <span class="n">Li</span>    <span class="mi">6</span><span class="p">.</span><span class="mi">96750</span>  <span class="n">Li</span><span class="p">.</span><span class="n">pbe</span><span class="o">-</span><span class="n">s</span><span class="o">-</span><span class="n">kjpaw_psl</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">2</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="n">UPF</span>
+
+<span class="n">ATOMIC_POSITIONS</span> <span class="err">{</span><span class="n">crystal</span><span class="err">}</span>
+<span class="n">Ni</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">000000000000000</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">000000000000000</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">000000000000000</span> 
+ <span class="n">O</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">741937000000000</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">741937000000000</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">741937000000000</span> 
+ <span class="n">O</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">258063000000000</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">258063000000000</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">258063000000000</span> 
+<span class="n">Li</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">500000000000000</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">500000000000000</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">500000000000000</span> 
+
+<span class="n">K_POINTS</span> <span class="n">automatic</span>
+<span class="mi">5</span> <span class="mi">5</span> <span class="mi">5</span>  <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span>
+
+<span class="n">CELL_PARAMETERS</span> <span class="err">{</span><span class="n">alat</span><span class="err">}</span>
+  <span class="mi">1</span><span class="p">.</span><span class="mi">000000000000000</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">000000000000000</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">000000000000000</span> 
+  <span class="mi">0</span><span class="p">.</span><span class="mi">836301242074196</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">548270218510140</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">000000000000000</span> 
+  <span class="mi">0</span><span class="p">.</span><span class="mi">836301242074196</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">249697083586569</span>   <span class="mi">0</span><span class="p">.</span><span class="mi">488110232379448</span> 
+</pre></div>
+
+
+<p>Note that I have used PAW method for this system. The cutoff and kpoints parameters
+are not optimized, I only used them for convenience.
+The value of <code>ethr</code> is set to the default value (10<sup>-6</sup> Ry)</p>
+<p>First, let's check the total energy result:</p>
+<div class="highlight"><pre><span></span><span class="n">LOG_cg</span>   <span class="p">:</span><span class="o">!</span>    <span class="n">total</span> <span class="n">energy</span>              <span class="o">=</span>    <span class="o">-</span><span class="mi">284</span><span class="p">.</span><span class="mi">13796750</span> <span class="n">Ry</span>
+<span class="n">LOG_david</span><span class="p">:</span><span class="o">!</span>    <span class="n">total</span> <span class="n">energy</span>              <span class="o">=</span>    <span class="o">-</span><span class="mi">284</span><span class="p">.</span><span class="mi">13796726</span> <span class="n">Ry</span>
+<span class="n">LOG_ppcg</span> <span class="p">:</span><span class="o">!</span>    <span class="n">total</span> <span class="n">energy</span>              <span class="o">=</span>    <span class="o">-</span><span class="mi">284</span><span class="p">.</span><span class="mi">13796748</span> <span class="n">Ry</span>
+</pre></div>
+
+
+<p>The values are agree within <code>ethr</code>.</p>
+<p>Next, let's check the estimated RAM usage:</p>
+<div class="highlight"><pre><span></span><span class="n">LOG_cg</span>   <span class="o">:</span>     <span class="n">Estimated</span> <span class="n">max</span> <span class="n">dynamical</span> <span class="n">RAM</span> <span class="n">per</span> <span class="n">process</span> <span class="o">&gt;</span>      <span class="mf">61.96</span> <span class="n">MB</span>
+<span class="n">LOG_david</span><span class="o">:</span>     <span class="n">Estimated</span> <span class="n">max</span> <span class="n">dynamical</span> <span class="n">RAM</span> <span class="n">per</span> <span class="n">process</span> <span class="o">&gt;</span>      <span class="mf">61.96</span> <span class="n">MB</span>
+<span class="n">LOG_ppcg</span> <span class="o">:</span>     <span class="n">Estimated</span> <span class="n">max</span> <span class="n">dynamical</span> <span class="n">RAM</span> <span class="n">per</span> <span class="n">process</span> <span class="o">&gt;</span>      <span class="mf">61.96</span> <span class="n">MB</span>
+</pre></div>
+
+
+<p>Hmm, they are similar. This is actually outside my expectation as I expect
+they should have difference (at least for CG and Davidson). I have no explanation
+or guess other than that they are not estimated properly (?).</p>
+<p>Next, let's check the total time required to finish the calculation:</p>
+<div class="highlight"><pre><span></span><span class="n">LOG_cg</span>   <span class="o">:</span>     <span class="n">PWSCF</span>        <span class="o">:</span>   <span class="mi">2</span><span class="n">m43</span><span class="o">.</span><span class="mi">99</span><span class="n">s</span> <span class="n">CPU</span>   <span class="mi">2</span><span class="n">m45</span><span class="o">.</span><span class="mi">24</span><span class="n">s</span> <span class="n">WALL</span>
+<span class="n">LOG_david</span><span class="o">:</span>     <span class="n">PWSCF</span>        <span class="o">:</span>     <span class="mf">54.25</span><span class="n">s</span> <span class="n">CPU</span>     <span class="mf">54.82</span><span class="n">s</span> <span class="n">WALL</span>
+<span class="n">LOG_ppcg</span> <span class="o">:</span>     <span class="n">PWSCF</span>        <span class="o">:</span>   <span class="mi">2</span><span class="n">m</span> <span class="mf">3.64</span><span class="n">s</span> <span class="n">CPU</span>   <span class="mi">2</span><span class="n">m</span> <span class="mf">4.19</span><span class="n">s</span> <span class="n">WALL</span>
+</pre></div>
+
+
+<p>CG is the slowest and Davidson is the fastest. PPCG is faster several seconds
+as compared to CG.</p>
+<p>Finally, let's check the total number SCF of iterations required
+to reach convergence:</p>
+<div class="highlight"><pre><span></span><span class="n">LOG_cg</span>   <span class="o">:</span>     <span class="n">convergence</span> <span class="n">has</span> <span class="n">been</span> <span class="n">achieved</span> <span class="k">in</span>  <span class="mi">23</span> <span class="n">iterations</span>
+<span class="n">LOG_david</span><span class="o">:</span>     <span class="n">convergence</span> <span class="n">has</span> <span class="n">been</span> <span class="n">achieved</span> <span class="k">in</span>  <span class="mi">12</span> <span class="n">iterations</span>
+<span class="n">LOG_ppcg</span> <span class="o">:</span>     <span class="n">convergence</span> <span class="n">has</span> <span class="n">been</span> <span class="n">achieved</span> <span class="k">in</span>  <span class="mi">12</span> <span class="n">iterations</span>
+</pre></div>
+
+
+<p>SCF+Davidson and SCF+PPCG require the same number of iterations
+to converges.
+SCF+CG requires more iterations to converge however, if we compare the
+time require for each SCF iterations:</p>
+<div class="highlight"><pre><span></span><span class="k">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">time_cg</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="mi">43</span><span class="p">.</span><span class="mi">99</span><span class="p">;</span>
+
+<span class="k">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">time_ppcg</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="mi">3</span><span class="p">.</span><span class="mi">64</span><span class="p">;</span>
+
+<span class="k">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">time_cg</span>
+<span class="k">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="mi">163</span><span class="p">.</span><span class="mi">99</span>
+
+<span class="k">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">time_ppcg</span>
+<span class="k">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="mi">123</span><span class="p">.</span><span class="mi">64</span>
+
+<span class="k">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">time_ppcg</span><span class="o">/</span><span class="mi">12</span>
+<span class="k">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="mi">10</span><span class="p">.</span><span class="mi">303333333333333</span>
+
+<span class="k">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">time_cg</span><span class="o">/</span><span class="mi">23</span>
+<span class="k">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="mi">7</span><span class="p">.</span><span class="mi">130000000000001</span>
+</pre></div>
+
+
+<p>Average time required per SCF iteration for CG is still faster than PPCG.
+What I can conlude from this is that the resulting eigenpairs
+of PPCG is more accurate than CG. Usually, we don't need the resulting eigenpairs
+in each SCF iterations to be accurate, especially in early SCF iterations, as long
+as they reach full accuracies in the last SCF iteration.
+From my experience in <a href="https://github.com/f-fathurrahman/PWDFT.jl">PWDFT.jl</a>,
+a good convergence in eigenpairs usually will result in faster SCF convergence
+(less iterations to reach convergence).</p>
+<p><strong>LiNiO<sub>2</sub> using ONCV pseudopotentials</strong></p>
+<p>Because I still suspect the RAM requirement result from the previous
+test, I decided to use ONCV pseudopotential,
+which is a type of norm-conserving pseudopotential, instead of PAW.
+This is the change that I made in the input file:</p>
+<div class="highlight"><pre><span></span><span class="n">ATOMIC_SPECIES</span>
+  <span class="n">Ni</span>   <span class="mi">58</span><span class="p">.</span><span class="mi">69340</span>  <span class="n">Ni_ONCV_PBE</span><span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">upf</span>
+   <span class="n">O</span>   <span class="mi">15</span><span class="p">.</span><span class="mi">99900</span>  <span class="n">O_ONCV_PBE</span><span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">upf</span>
+  <span class="n">Li</span>    <span class="mi">6</span><span class="p">.</span><span class="mi">96750</span>  <span class="n">Li_ONCV_PBE</span><span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="n">upf</span>
+</pre></div>
+
+
+<p>I have used 4 processors for all the data I presented below.</p>
+<p>Memory requirement:</p>
+<div class="highlight"><pre><span></span><span class="n">LOG_cg</span>   <span class="o">:</span>     <span class="n">Estimated</span> <span class="n">total</span> <span class="n">dynamical</span> <span class="n">RAM</span> <span class="o">&gt;</span>      <span class="mf">63.46</span> <span class="n">MB</span>
+<span class="n">LOG_david</span><span class="o">:</span>     <span class="n">Estimated</span> <span class="n">total</span> <span class="n">dynamical</span> <span class="n">RAM</span> <span class="o">&gt;</span>      <span class="mf">67.46</span> <span class="n">MB</span>
+<span class="n">LOG_ppcg</span> <span class="o">:</span>     <span class="n">Estimated</span> <span class="n">total</span> <span class="n">dynamical</span> <span class="n">RAM</span> <span class="o">&gt;</span>      <span class="mf">63.46</span> <span class="n">MB</span>
+</pre></div>
+
+
+<p>We can see that memory requirement of lower that Davidson and the same as CG.
+However, the overall timing of PPCG is the worst:</p>
+<div class="highlight"><pre><span></span><span class="n">LOG_cg</span>   <span class="o">:</span>     <span class="n">PWSCF</span>        <span class="o">:</span>     <span class="mf">42.20</span><span class="n">s</span> <span class="n">CPU</span>     <span class="mf">44.31</span><span class="n">s</span> <span class="n">WALL</span>
+<span class="n">LOG_david</span><span class="o">:</span>     <span class="n">PWSCF</span>        <span class="o">:</span>     <span class="mf">30.39</span><span class="n">s</span> <span class="n">CPU</span>     <span class="mf">31.60</span><span class="n">s</span> <span class="n">WALL</span>
+<span class="n">LOG_ppcg</span> <span class="o">:</span>     <span class="n">PWSCF</span>        <span class="o">:</span>   <span class="mi">1</span><span class="n">m10</span><span class="o">.</span><span class="mi">36</span><span class="n">s</span> <span class="n">CPU</span>   <span class="mi">1</span><span class="n">m13</span><span class="o">.</span><span class="mi">38</span><span class="n">s</span> <span class="n">WALL</span>
+</pre></div>
+
+
+<p>Here is the required number of SCF iterations to converge</p>
+<div class="highlight"><pre><span></span><span class="n">LOG_cg</span>   <span class="o">:</span>     <span class="n">convergence</span> <span class="n">has</span> <span class="n">been</span> <span class="n">achieved</span> <span class="k">in</span>  <span class="mi">13</span> <span class="n">iterations</span>
+<span class="n">LOG_david</span><span class="o">:</span>     <span class="n">convergence</span> <span class="n">has</span> <span class="n">been</span> <span class="n">achieved</span> <span class="k">in</span>  <span class="mi">12</span> <span class="n">iterations</span>
+<span class="n">LOG_ppcg</span> <span class="o">:</span>     <span class="n">convergence</span> <span class="n">has</span> <span class="n">been</span> <span class="n">achieved</span> <span class="k">in</span>  <span class="mi">12</span> <span class="n">iterations</span>
+</pre></div>
+
+
+<p><strong>Conclusion</strong></p>
+<p>It seems that PPCG is not yet a better method than Davidson diagonalization
+for the system size that I have covered here.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://itb.ac.id/">ITB</a></li>
+                            <li><a href="http://python.org/">Teknik Fisika ITB</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

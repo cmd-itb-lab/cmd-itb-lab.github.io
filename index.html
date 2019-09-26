@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>CMD ITB LAB</title>
+        <title>Welcome to CMD QE Laboratory</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
@@ -10,188 +10,19 @@
         <header id="banner" class="body">
                 <h1><a href="/">CMD ITB LAB </a></h1>
                 <nav><ul>
-                    <li><a href="/pages/about.html">About</a></li>
-                    <li><a href="/pages/contact.html">Contact</a></li>
-                    <li><a href="/pages/members.html">Members</a></li>
-                    <li><a href="/pages/publications.html">Publications</a></li>
-                    <li><a href="/pages/research-topics.html">Research topics</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                    <li><a href="/members.html">Members</a></li>
+                    <li><a href="/research-topics.html">Research</a></li>
+                    <li><a href="/publications.html">Publications</a></li>
                     <li><a href="/category/post.html">Post</a></li>
-                    <li><a href="/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="/installing-ase-and-gpaw-in-anaconda-3.html">Installing ASE and GPAW in Anaconda 3</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2019-09-03T14:29:00+07:00">
-                Published: Tue 03 September 2019
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/cmd-itb-lab.html">cmd-itb-lab</a>
-        </address>
-<p>In <a href="/category/post.html">Post</a>.</p>
-
-</footer><!-- /.post-info --><p>Activate Anaconda environment first.</p>
-<p>Installing ASE</p>
-<p>Libxc-4.3.4</p>
-<p>Configuring LibXC:</p>
-<div class="highlight"><pre><span></span><span class="n">cmake</span> <span class="o">-</span><span class="n">D</span> <span class="n">CMAKE_INSTALL_PREFIX</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">efefer</span><span class="o">/</span><span class="n">miniconda3</span><span class="o">/</span> <span class="p">..</span><span class="o">/</span>
-<span class="n">make</span> <span class="o">-</span><span class="n">j</span> <span class="mi">4</span>
-</pre></div>
-
-
-<p>GPAW</p>
-<div class="highlight"><pre><span></span># <span class="nv">LibXC</span>:
-# <span class="nv">In</span> <span class="nv">order</span> <span class="nv">to</span> <span class="nv">link</span> <span class="nv">libxc</span> <span class="nv">installed</span> <span class="nv">in</span> <span class="nv">a</span> <span class="nv">non</span><span class="o">-</span><span class="nv">standard</span> <span class="nv">location</span>
-# <span class="ss">(</span><span class="nv">e</span>.<span class="nv">g</span>.: <span class="nv">configure</span> <span class="o">--</span><span class="nv">prefix</span><span class="o">=/</span><span class="nv">home</span><span class="o">/</span><span class="nv">user</span><span class="o">/</span><span class="nv">libxc</span><span class="o">-</span><span class="mi">2</span>.<span class="mi">0</span>.<span class="mi">1</span><span class="o">-</span><span class="mi">1</span><span class="ss">)</span>, <span class="nv">use</span>:
-
-# <span class="o">-</span> <span class="nv">static</span> <span class="nv">linking</span>:
-<span class="k">if</span> <span class="mi">1</span>:
-    <span class="nv">xc</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">/home/efefer/miniconda3/</span><span class="s1">&#39;</span>
-    <span class="nv">include_dirs</span> <span class="o">+=</span> [<span class="nv">xc</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="s">include</span><span class="s1">&#39;</span>]
-    <span class="nv">extra_link_args</span> <span class="o">+=</span> [<span class="nv">xc</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="s">lib64/libxc.a</span><span class="s1">&#39;</span>]
-    <span class="k">if</span> <span class="s1">&#39;</span><span class="s">xc</span><span class="s1">&#39;</span> <span class="nv">in</span> <span class="nv">libraries</span>:
-        <span class="nv">libraries</span>.<span class="nv">remove</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">xc</span><span class="s1">&#39;</span><span class="ss">)</span>
-</pre></div>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/fortran-tutorial-1.html" rel="bookmark"
-                           title="Permalink to Fortran Tutorial 1">Fortran Tutorial 1</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2019-08-20T14:30:00+07:00">
-                Published: Tue 20 August 2019
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/cmd-itb-lab.html">cmd-itb-lab</a>
-        </address>
-<p>In <a href="/category/post.html">Post</a>.</p>
-
-</footer><!-- /.post-info -->                <p>This is a Fortran tutorial.</p>
-<p>Fortran example:</p>
-<div class="highlight"><pre><span></span><span class="k">PROGRAM </span><span class="n">myprog</span>
-  <span class="k">IMPLICIT NONE</span>
-<span class="k">  CALL </span><span class="n">mysub</span><span class="p">(</span><span class="mf">5.d0</span><span class="p">,</span> <span class="mf">4.1d0</span><span class="p">)</span>
-<span class="k">END PROGRAM</span>
-
-<span class="k">SUBROUTINE </span><span class="n">mysub</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-  <span class="k">IMPLICIT NONE</span>
-<span class="k">  </span><span class="kt">REAL</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
-  <span class="k">WRITE</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s1">&#39;x + y = &#39;</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
-<span class="k">END SUBROUTINE</span>
-</pre></div>
-                <a class="readmore" href="/fortran-tutorial-1.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/this-is-the-third-post.html" rel="bookmark"
-                           title="Permalink to This is the third post">This is the third post</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2019-08-20T14:00:00+07:00">
-                Published: Tue 20 August 2019
-        </abbr>
-		<br />
-        <abbr class="modified" title="2019-08-20T14:24:00+07:00">
-                Updated: Tue 20 August 2019
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/fadjar-fathurrahman.html">Fadjar Fathurrahman</a>
-        </address>
-<p>In <a href="/category/python.html">Python</a>.</p>
-<p>tags: <a href="/tag/pelican.html">pelican</a> <a href="/tag/publishing.html">publishing</a> </p>
-</footer><!-- /.post-info -->                <p>This is just a summary</p>
-                <a class="readmore" href="/this-is-the-third-post.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/finite-difference-in-1d.html" rel="bookmark"
-                           title="Permalink to Finite Difference in 1D">Finite Difference in 1D</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2019-08-08T22:26:00+07:00">
-                Published: Thu 08 August 2019
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/cmd-itb-lab.html">cmd-itb-lab</a>
-        </address>
-<p>In <a href="/category/post.html">Post</a>.</p>
-
-</footer><!-- /.post-info -->                <p>A tutorial about finite difference solution to TISE</p>
-                <a class="readmore" href="/finite-difference-in-1d.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/second-post.html" rel="bookmark"
-                           title="Permalink to Second Post">Second Post</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2019-08-08T21:50:00+07:00">
-                Published: Thu 08 August 2019
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/cmd-itb-lab.html">cmd-itb-lab</a>
-        </address>
-<p>In <a href="/category/post.html">Post</a>.</p>
-
-</footer><!-- /.post-info -->                <p>Hello, this is my <strong>second</strong> post.</p>
-                <a class="readmore" href="/second-post.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/band-structure-of-si-using-quantum-espresso.html" rel="bookmark"
-                           title="Permalink to Band structure of Si using Quantum ESPRESSO">Band structure of Si using Quantum ESPRESSO</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2019-07-26T16:38:00+07:00">
-                Published: Fri 26 July 2019
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/cmd-itb-lab.html">cmd-itb-lab</a>
-        </address>
-<p>In <a href="/category/post.html">Post</a>.</p>
-
-</footer><!-- /.post-info -->                <p>Quantum ESPRESSO version used in this tutorial: 6.4</p>
-<p>Calculating band structure is one of typical task in electronic structure calculations.
-In this tutorial, I will describe how to calculate band structure of silicon crystal
-using density functional theory as implemented in PWSCF which is included in the
-Quantum EPSRESSO …</p>
-                <a class="readmore" href="/band-structure-of-si-using-quantum-espresso.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
+<section id="content" class="body">
+    <h1 class="entry-title">Welcome to CMD QE Laboratory</h1>
+    
+    <p><img src="/pages/images/Image-CMD-90-768x512.jpg"></p>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
